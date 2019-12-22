@@ -107,7 +107,7 @@ struct AKAZEOptions {
     verbosity = false;
 
     ncudaimages = 4;
-    maxkeypoints = 16*8192;
+    maxkeypoints = 20*8192;
   }
 
     void setWidth(int w) {img_width=w;}

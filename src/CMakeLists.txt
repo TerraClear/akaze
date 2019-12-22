@@ -1,7 +1,6 @@
 
 # Find external libraries and dependencies
 find_package(OpenCV REQUIRED)
-find_package(Doxygen)
 find_package(CUDA)
 
 
@@ -65,7 +64,8 @@ set(AKAZE_SRCS
     lib/AKAZE.h                  lib/AKAZE.cpp
     lib/fed.h                    lib/fed.cpp
     lib/nldiffusion_functions.h  lib/nldiffusion_functions.cpp
-    lib/utils.h                  lib/utils.cpp)
+    lib/utils.h                  lib/utils.cpp
+    dedupe.cpp                   dedupe.hpp)
  
 add_library(AKAZE ${AKAZE_SRCS})
 target_link_libraries(AKAZE ${OpenCV_LIBS})
@@ -80,18 +80,6 @@ SET(CUDA_SEPARABLE_COMPILATION ON)
 
 cuda_add_library(AKAZE_CUDA ${AKAZE_CUDA_SRCS})
 target_link_libraries(AKAZE_CUDA ${OpenCV_LIBS})
-
-# Feature detector program
-add_executable(akaze_features akaze_features.cpp)
-target_link_libraries(akaze_features AKAZE AKAZE_CUDA)
-
-# Image matching program
-add_executable(akaze_match akaze_match.cpp)
-target_link_libraries(akaze_match AKAZE AKAZE_CUDA)
-
-# Program that compares AKAZE with ORB and BRISK
-add_executable(akaze_compare akaze_compare.cpp)
-target_link_libraries(akaze_compare AKAZE AKAZE_CUDA)
 
 # ============================================================================ #
 # Library installation
@@ -108,12 +96,3 @@ install(FILES
     DESTINATION
     include
 )
-
-# ============================================================================ #
-# Generate Doxygen-based documentation project
-if(DOXYGEN_FOUND)
-  add_custom_target(akaze_documentation
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "Generating API documentation with Doxygen" VERBATIM)
-endif(DOXYGEN_FOUND)

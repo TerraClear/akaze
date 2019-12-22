@@ -514,7 +514,7 @@ float *AllocBuffers(int width, int height, int num, int omax, int &maxpts,
   size_t pitch;
 
   std::cout << "allocating " << size/1024./1024. << " Mbytes of gpu memory\n";
-
+  
   safeCall(cudaMallocPitch((void **)&memory, &pitch, (size_t)4096,
                            (size + 4095) / 4096 * sizeof(float)));
   for (int i = 0; i < omax * num; i++) {
