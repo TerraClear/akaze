@@ -513,7 +513,7 @@ float *AllocBuffers(int width, int height, int num, int omax, int &maxpts,
   float *memory = NULL;
   size_t pitch;
 
-  std::cout << "allocating " << size/1024./1024. << " Mbytes of gpu memory\n";
+  //std::cout << "allocating " << size/1024./1024. << " Mbytes of gpu memory\n";
   
   safeCall(cudaMallocPitch((void **)&memory, &pitch, (size_t)4096,
                            (size + 4095) / 4096 * sizeof(float)));
@@ -1337,7 +1337,7 @@ void FilterExtrema(cv::KeyPoint *pts, cv::KeyPoint *newpts, int* kptindices, int
       int nump_ceil = 1;
       while (nump_ceil < nump) nump_ceil <<= 1;
 
-      std::cout << "numpceil: " << nump_ceil << std::endl;
+      //std::cout << "numpceil: " << nump_ceil << std::endl;
       
       sortstruct_t<int>* sortstruct;
       cudaMalloc((void**)&sortstruct, nump_ceil*16*sizeof(sortstruct_t<int>));
