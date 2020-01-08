@@ -21,6 +21,10 @@
 #include <iostream>
 #include <fstream>
 
+#ifndef DEDUPE_HPP
+#define DEDUPE_HPP
+
+
 namespace terraclear 
 {
    
@@ -53,3 +57,5 @@ namespace terraclear
 
     };
 }
+
+#endif /* DEDUPE_HPP */
