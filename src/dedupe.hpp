@@ -1,11 +1,3 @@
-/*
-*
-* Authors: Alex Witt (alex.witt@terraclear.com)
-* 
-* Date: Novemeber 2019
-*
-*/
-
 #include "./lib/AKAZE.h"
 
 // OpenCV
