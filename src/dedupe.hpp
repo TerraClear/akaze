@@ -39,7 +39,7 @@ namespace terraclear
             double takaze = 0.0, tmatch = 0.0;
 
             // Image matching options
-            const float MIN_H_ERROR = 100.50f;            // Maximum error in pixels to accept an inlier
+            const float MIN_H_ERROR = 10.50f;            // Maximum error in pixels to accept an inlier
             const float DRATIO = 0.8f;                 // NNDR Matching value
         
         public:
