@@ -19,17 +19,17 @@
  * @author Pablo F. Alcantarilla
  */
 
-#include "dedupe.hpp"
+#include "akaze.hpp"
 
 
 namespace terraclear
 {
-  dedupe::dedupe() 
+  akaze::akaze() 
   { 
     
   }
   
-  std::vector<cv::Point2f> dedupe::find_points(cv::Mat& img1, cv::Mat& img2)
+  std::vector<cv::Point2f> akaze::find_points(cv::Mat& img1, cv::Mat& img2)
   {
     AKAZEOptions options = AKAZEOptions();
     // Convert the images to float
@@ -67,29 +67,18 @@ namespace terraclear
 
     // Matching Descriptors!!
     std::vector<cv::Point2f> matches, inliers;
-    cv::Ptr<cv::DescriptorMatcher> matcher_l2 = cv::DescriptorMatcher::create("BruteForce");
-    cv::Ptr<cv::DescriptorMatcher> matcher_l1 = cv::DescriptorMatcher::create("BruteForce-Hamming");
 
     t1 = cv::getTickCount();
-
-    libAKAZECU::Matcher cuda_matcher;
-
-    cuda_matcher.bfmatch(desc1, desc2, dmatches);
-    cuda_matcher.bfmatch(desc2, desc1, dmatches);
-    //MatchDescriptors(desc1, desc2, dmatches);
-
-    //std::cout << "#matches: " << dmatches.size() << std::endl;
-    //std::cout << "#kptsq:   " << kpts1.size() << std::endl;
-    //std::cout << "#kptst:   " << kpts2.size() << std::endl;
+    // Create OpenCV cuda matcher
+    auto m1 = std::make_unique<cv::cuda::DescriptorMatcher>(cv::NORM_L2);
+    m1->knnMatch(desc1, desc2, dmatches, 2);
+    //t2 = cv::getTickCount();
+    tmatch = 1000.0*(t2 - t1)/ cv::getTickFrequency();
     
     cudaProfilerStop();
-    
-    t2 = cv::getTickCount();
-    tmatch = 1000.0*(t2 - t1)/ cv::getTickFrequency();
 
     // Compute Inliers!!
     matches2points_nndr(kpts2, kpts1, dmatches, matches, DRATIO);
-
     compute_inliers_ransac(matches, inliers, MIN_H_ERROR, false);
 
     // Compute the inliers statistics
@@ -99,28 +88,6 @@ namespace terraclear
     ninliers = inliers.size()/2;
     noutliers = nmatches - ninliers;
     ratio = 100.0*((float) ninliers / (float) nmatches);
-
-    // Show matching statistics
-    /*
-    std::cout << "Number of Keypoints Image 1: " << nkpts1 << std::endl;;
-    std::cout << "Number of Keypoints Image 2: " << nkpts2 << std::endl;;
-    std::cout << "A-KAZE Features Extraction Time (ms): " << takaze << std::endl;;
-    std::cout << "Matching Descriptors Time (ms): " << tmatch << std::endl;;
-    std::cout << "Number of Matches: " << nmatches << std::endl;;
-    std::cout << "Number of Inliers: " << ninliers << std::endl;;
-    std::cout << "Number of Outliers: " << noutliers << std::endl;;
-    std::cout << "Inliers Ratio: " << ratio << std::endl; 
-    */
-
-    //draw_keypoints(img1_rgb, kpts1);
-    //draw_keypoints(img2_rgb, kpts2);
-    //draw_inliers(img1_rgb, img2_rgb, img_com, inliers);
-    //cv::namedWindow("Inliers", cv::WINDOW_NORMAL);
-    //cv::imshow("Inliers",img_com);
-    //cv::Mat save_img;
-    //cv::resize(img_com, save_img, cv::Size(), 0.5,0.5);
-    //cv::imwrite("result.jpg", img_com);
-    //cv::waitKey(0);
 
     return inliers;
   }

@@ -1,3 +1,24 @@
+//=============================================================================
+//
+// akaze_match.hpp
+// Authors: Pablo F. Alcantarilla (1), Jesus Nuevo (2)
+// Institutions: Toshiba Research Europe Ltd (1)
+//               TrueVision Solutions (2)
+// Date: 07/10/2014
+// Email: pablofdezalc@gmail.com
+//
+// AKAZE Features Copyright 2014, Pablo F. Alcantarilla, Jesus Nuevo
+// All Rights Reserved
+// See LICENSE for the license information
+//=============================================================================
+
+/**
+ * @file akaze_match.hpp
+ * @brief Main program for matching two images with AKAZE features
+ * @date Oct 07, 2014
+ * @author Pablo F. Alcantarilla
+ */
+
 #include "./lib/AKAZE.h"
 
 // OpenCV
@@ -13,14 +34,14 @@
 #include <iostream>
 #include <fstream>
 
-#ifndef DEDUPE_HPP
-#define DEDUPE_HPP
+#ifndef akaze_HPP
+#define akaze_HPP
 
 
 namespace terraclear 
 {
    
-    class dedupe
+    class akaze
     {
         private:
             // Variables
@@ -44,10 +65,10 @@ namespace terraclear
         
         public:
             // Function to compute homography based off inlier points
-            dedupe();
+            akaze();
             std::vector<cv::Point2f> find_points(cv::Mat&, cv::Mat&);
 
     };
 }
 
-#endif /* DEDUPE_HPP */
+#endif /* akaze_HPP */

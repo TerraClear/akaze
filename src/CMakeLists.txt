@@ -65,7 +65,7 @@ set(AKAZE_SRCS
     lib/fed.h                    lib/fed.cpp
     lib/nldiffusion_functions.h  lib/nldiffusion_functions.cpp
     lib/utils.h                  lib/utils.cpp
-    dedupe.cpp                   dedupe.hpp)
+    akaze.cpp                   akaze.hpp)
  
 add_library(AKAZE ${AKAZE_SRCS})
 target_link_libraries(AKAZE ${OpenCV_LIBS})
